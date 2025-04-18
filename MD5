@@ -1,0 +1,13 @@
+4b6bbf88c9aa46df369536a70b639f0b *DESCRIPTION
+f816bdce1e53f7b0ce4da3e10a0b9907 *LICENSE
+a5b6b7d5ee60eae3b5ef92f08956190f *NAMESPACE
+22227f26de28905cb4da2e1485e9baf5 *R/gamma_estimators.R
+94dbfd4a0aacd91ba5239eddae8ae069 *R/gamma_tailplot.R
+81b483770af1426b7d8262d6f44dd896 *R/pareto_estimators.R
+dd27ea77c6d90870949c63bf4e90a665 *R/pareto_tailplot.R
+aa5e5a2cbfaea3d9b6cdbe378ac48cee *build/partial.rdb
+64fb23bf64ff1b3af03b27e56b1ce2d6 *inst/scaling_test.R
+2664ecb0b495accba8665e129c9645f5 *man/gamma_tail.Rd
+5fe646b2f83fe12684bca123f660dfdf *man/gamma_tailplot.Rd
+ba42e743287491236cb612875740e262 *man/pareto_tail.Rd
+7ff5e75b27e253e70ff6da815f5843b2 *man/pareto_tailplot.Rd
