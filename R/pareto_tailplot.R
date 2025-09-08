@@ -8,8 +8,7 @@
 #' @param method the method used for computing the confidence intervals (options include unbiased variance estimator, jackknife, and bootstrap).
 #' @param R the number of the bootstrap replicates.
 #' @param conf.level the confidence level for the interval. 
-#' @param alpha.max  the upper limit of the interval to be searched for the root in an internal routine (the default value of 100 should be increased in case of error).
-#'
+#' 
 #' @details
 #' In Klar (2024) 
 #' the function
@@ -106,23 +105,24 @@
 #' @importFrom stats uniroot qnorm var
 #' @export 
 pareto_tail = function(x, u, confint=FALSE, method = c("unbiased", "bootstrap", "jackknife"), 
-                       R = 1000, conf.level = 0.95, alpha.max = 100) {
+                       R = 1000, conf.level = 0.95) {
     method = match.arg(method)
     if (!(method %in% c("unbiased", "bootstrap", "jackknife"))) 
         stop("method can only be unbiased, bootstrap or jackknife")
     if(any(x < 0))
         stop("The sample values must be positive")
-        
+
     tvec = t_vec(x, u)
-    alpha = sapply(tvec, alpha_root, alpha.max=alpha.max)
+    alpha = sapply(tvec, alpha_root)
 
     if (confint == FALSE) {
         result = cbind(u, tvec, alpha)
         colnames(result) = c("threshold", "t.estimate", "alpha")
         rownames(result) = NULL 
     } else {
-        conf.int = ci(x, u, method, R, conf.level)
-        conf.int.a = apply(conf.int, 1:2, alpha_root, alpha.max=alpha.max)
+        conf.int = ci_pareto(x, u, method, R, conf.level)
+        print(conf.int)
+        conf.int.a = apply(conf.int, 1:2, alpha_root)
         result = cbind(u, tvec, t(conf.int), alpha, conf.int.a[2,], conf.int.a[1,])
         colnames(result) = c("threshold", "t.estimate", "t.ci1", "t.ci1",
                             "alpha", "alpha.ci1", "alpha.ci2")
@@ -172,7 +172,7 @@ pareto_tailplot = function(x, method = c("unbiased", "bootstrap", "jackknife"),
     ub = sort(x)[n-4]
     trec = t_rec(x)
     u.vec = seq(min(x), ub, length.out=ci.points)
-    conf.int = ci(x, u.vec, method, R, conf.level)
+    conf.int = ci_pareto(x, u.vec, method, R, conf.level)
     
     if (xscale == "o" | xscale == "b") { #original scale
         plot.stepfun( stepfun(trec[1:(n-2),1], trec[,2], right=TRUE), xaxs="i",

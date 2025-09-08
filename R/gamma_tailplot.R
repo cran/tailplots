@@ -8,7 +8,6 @@
 #' @param method the method used for computing the confidence intervals (options include unbiased variance estimator, jackknife, and bootstrap).
 #' @param R the number of the bootstrap replicates.
 #' @param conf.level the confidence level for the interval. 
-#' @param alpha.max  the upper limit of the interval to be searched for the root in an internal routine (the default value of 100 should be increased in case of error).
 #' 
 #' @details 
 #' The function \eqn{g} introduced by Asmussen and Lehtomaa (2017) is used to distinguish between 
@@ -93,7 +92,7 @@
 #' @importFrom stats var qnorm uniroot
 #' @export 
 gamma_tail = function(x, d, confint = FALSE, method = c("unbiased", "bootstrap", "jackknife"),
-                      R = 1000, conf.level = 0.95, alpha.max = 100) {
+                      R = 1000, conf.level = 0.95) {
     method = match.arg(method)
     if (!(method %in% c("unbiased", "bootstrap", "jackknife"))) 
         stop("method can only be unbiased, bootstrap or jackknife")
@@ -101,7 +100,7 @@ gamma_tail = function(x, d, confint = FALSE, method = c("unbiased", "bootstrap",
         stop("The sample values must be positive")
 
     gvec = g_vec(x, d)
-    alpha = sapply(gvec, alpha_root_gamma, alpha.max=alpha.max)
+    alpha = sapply(gvec, alpha_root_gamma)
     
     if (confint == FALSE) {
         result = cbind(d, gvec, alpha)
@@ -109,7 +108,7 @@ gamma_tail = function(x, d, confint = FALSE, method = c("unbiased", "bootstrap",
         rownames(result) = NULL 
     } else {
         conf.int = ci_gamma(x, d, method, R, conf.level)
-        conf.int.a = apply(conf.int, 1:2, alpha_root_gamma, alpha.max=alpha.max)
+        conf.int.a = apply(conf.int, 1:2, alpha_root_gamma)
         result = cbind(d, gvec, t(conf.int), alpha, conf.int.a[2,], conf.int.a[1,])
         colnames(result) = c("threshold", "g.estimate", "g.ci1", "g.ci1",
                             "alpha", "alpha.ci1", "alpha.ci2")

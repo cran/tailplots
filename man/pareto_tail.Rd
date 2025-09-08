@@ -10,8 +10,7 @@ pareto_tail(
   confint = FALSE,
   method = c("unbiased", "bootstrap", "jackknife"),
   R = 1000,
-  conf.level = 0.95,
-  alpha.max = 100
+  conf.level = 0.95
 )
 }
 \arguments{
@@ -26,8 +25,6 @@ pareto_tail(
 \item{R}{the number of the bootstrap replicates.}
 
 \item{conf.level}{the confidence level for the interval.}
-
-\item{alpha.max}{the upper limit of the interval to be searched for the root in an internal routine (the default value of 100 should be increased in case of error).}
 }
 \value{
 A matrix containing:
